@@ -35,7 +35,7 @@
                 "word_count": 3482,
                 "processed": true,
                 "id": 87,
-                "title": "A brief overview of the Spark architecture and component set"
+                "title": "A brief overview of the Spark architecture and component set",
                 "lead_image_url": "http://www.adobe.com/images/2011/04/11/p233/110411_r20743_p233.jpg",
                 "author": "John Smith",
                 "direction": "ltr",
@@ -63,7 +63,7 @@
                 "word_count": 3482,
                 "processed": true,
                 "id": 86,
-                "title": "Web Application Description Language"
+                "title": "Web Application Description Language",
                 "lead_image_url": null,
                 "author": null,
                 "direction": "ltr",

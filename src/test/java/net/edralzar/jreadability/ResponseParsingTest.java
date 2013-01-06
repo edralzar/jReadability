@@ -1,10 +1,15 @@
 package net.edralzar.jreadability;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import net.edralzar.jreadability.data.AppliedTag;
 import net.edralzar.jreadability.data.Article;
@@ -14,6 +19,7 @@ import net.edralzar.jreadability.data.Conditions;
 import net.edralzar.jreadability.data.Meta;
 import net.edralzar.jreadability.data.SimpleArticle;
 import net.edralzar.jreadability.data.Tag;
+import net.edralzar.jreadability.service.ReadabilityServiceBuilder;
 
 import org.junit.Test;
 
@@ -64,7 +70,7 @@ public class ResponseParsingTest {
 	}
 
 	private <T> T testParsing(String fileName, Class<T> clazz) {
-		Gson gson = new Gson();
+		Gson gson = ReadabilityServiceBuilder.newGson();
 		try (Reader r = new InputStreamReader(
 				ResponseParsingTest.class.getResourceAsStream("/" + fileName));) {
 			return gson.fromJson(r, clazz);
@@ -72,6 +78,26 @@ public class ResponseParsingTest {
 			fail();
 			return null;
 		}
+	}
+
+	@Test
+	public void testDateUtc() {
+		// ensure that parsed date are interpreted as UTC and parsed in the
+		// current timezone
+		Calendar cal = Calendar.getInstance();
+		cal.clear();
+		cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+		cal.set(2012, 11, 12, 20, 00, 00);
+
+		Gson gson = ReadabilityServiceBuilder.newGson();
+		Date fromJson = gson.fromJson("\"2012-12-12 20:00:00\"", Date.class);
+
+		assertNotNull(fromJson);
+		assertEquals(cal.getTime().getTime(), fromJson.getTime());
+
+		cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		cal.setTime(fromJson);
+		assertEquals(20, cal.get(Calendar.HOUR_OF_DAY));
 	}
 
 }

@@ -1,5 +1,12 @@
 package net.edralzar.jreadability.service;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import net.edralzar.jreadability.oauth.ReadabilityApi;
 import net.edralzar.jreadability.oauth.ReadabilityConst;
 import net.edralzar.jreadability.oauth.store.ITokenStore;
@@ -8,6 +15,13 @@ import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
 public class ReadabilityServiceBuilder {
 
@@ -39,6 +53,15 @@ public class ReadabilityServiceBuilder {
 
 		// here we should have a verified access token
 		return new ReadabilityService(tokenStore, service);
+	}
+
+	/**
+	 * @return a {@link Gson} using the correct readability datetime pattern
+	 */
+	public static Gson newGson() {
+		return new GsonBuilder()
+				.registerTypeAdapter(Date.class, new ReadabilityDateAdapter())
+				.create();
 	}
 
 
