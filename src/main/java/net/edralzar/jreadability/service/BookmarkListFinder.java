@@ -39,7 +39,7 @@ public class BookmarkListFinder {
 	}
 
 	public BookmarkList find() throws ReadabilityException {
-		SimpleDateFormat sdf = new SimpleDateFormat(ReadabilityConst.DATETIME_PATTERN);
+		SimpleDateFormat sdf = new SimpleDateFormat(ReadabilityConst.DATETIME_OUTPUT_PATTERN);
 
 		OAuthRequest request = new OAuthRequest(Verb.GET,
 				"https://www.readability.com/api/rest/v1/bookmarks/");
