@@ -2,6 +2,7 @@ package net.edralzar.jreadability.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import net.edralzar.jreadability.ReadabilityException;
 import net.edralzar.jreadability.data.BookmarkList;
@@ -33,13 +34,14 @@ public class BookmarkListFinder {
 		return this;
 	}
 
-	public BookmarkListFinder addedSince(Date utcSince) {
-		this.addedSince = utcSince;
+	public BookmarkListFinder addedSince(Date since) {
+		this.addedSince = since;
 		return this;
 	}
 
 	public BookmarkList find() throws ReadabilityException {
 		SimpleDateFormat sdf = new SimpleDateFormat(ReadabilityConst.DATETIME_OUTPUT_PATTERN);
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 		OAuthRequest request = new OAuthRequest(Verb.GET,
 				"https://www.readability.com/api/rest/v1/bookmarks/");
