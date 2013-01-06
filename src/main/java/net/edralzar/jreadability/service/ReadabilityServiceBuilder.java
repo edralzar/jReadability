@@ -74,13 +74,5 @@ public class ReadabilityServiceBuilder {
 		 *         null if unable to get one
 		 */
 		public String onAuthenticationNeeded(String urlForAuthentication);
-
-		/**
-		 * called whenever there's an exception during the verification of the
-		 * pin
-		 *
-		 * @param error
-		 */
-		public void onVerificationError(Throwable error);
 	}
 }
