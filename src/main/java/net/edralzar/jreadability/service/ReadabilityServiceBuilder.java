@@ -1,4 +1,4 @@
-package net.edralzar.jreadability;
+package net.edralzar.jreadability.service;
 
 import net.edralzar.jreadability.oauth.ReadabilityApi;
 import net.edralzar.jreadability.oauth.ReadabilityConst;

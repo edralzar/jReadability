@@ -1,4 +1,4 @@
-package net.edralzar.jreadability;
+package net.edralzar.jreadability.service;
 
 import net.edralzar.jreadability.oauth.store.ITokenStore;
 
@@ -13,6 +13,10 @@ public class ReadabilityService {
 	ReadabilityService(ITokenStore tokenStore, OAuthService service) {
 		this.token = tokenStore.getToken();
 		this.service = service;
+	}
+
+	public BookmarkListFinder getBookmarks() {
+		return new BookmarkListFinder(this.token, this.service);
 	}
 
 }
