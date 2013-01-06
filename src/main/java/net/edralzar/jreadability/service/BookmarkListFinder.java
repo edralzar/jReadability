@@ -61,7 +61,7 @@ public class BookmarkListFinder {
 		Response response = request.send();
 
 		if (response.getCode() == 200) {
-			Gson gson = new Gson();
+			Gson gson = ReadabilityServiceBuilder.newGson();
 			return gson.fromJson(response.getBody(), BookmarkList.class);
 		} else
 			throw new ReadabilityRestException(response.getCode(),
