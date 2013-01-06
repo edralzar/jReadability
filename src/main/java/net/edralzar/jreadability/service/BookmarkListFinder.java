@@ -44,7 +44,7 @@ public class BookmarkListFinder {
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 		OAuthRequest request = new OAuthRequest(Verb.GET,
-				"https://www.readability.com/api/rest/v1/bookmarks/");
+				ReadabilityConst.API_BOOKMARKS);
 
 		if (includeArchives) {
 			request.addQuerystringParameter("archive", "1");
