@@ -3,6 +3,7 @@ package net.edralzar.jreadability.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import net.edralzar.jreadability.ReadabilityException;
 import net.edralzar.jreadability.ReadabilityRestException;
@@ -18,6 +19,9 @@ import org.scribe.oauth.OAuthService;
 import com.google.gson.Gson;
 
 public class BookmarkListFinder {
+
+	private static final Logger LOGGER = Logger.getLogger("jreadability");
+
 	private Token token;
 	private OAuthService service;
 
@@ -29,6 +33,7 @@ public class BookmarkListFinder {
 
 	private Date addedSince;
 	private boolean includeArchives = false;
+	private boolean verbose;
 
 	public BookmarkListFinder includeArchives() {
 		this.includeArchives = true;
@@ -40,8 +45,14 @@ public class BookmarkListFinder {
 		return this;
 	}
 
+	public BookmarkListFinder verbose() {
+		this.verbose = true;
+		return this;
+	}
+
 	public BookmarkList find() throws ReadabilityException {
-		SimpleDateFormat sdf = new SimpleDateFormat(ReadabilityConst.DATETIME_OUTPUT_PATTERN);
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				ReadabilityConst.DATETIME_OUTPUT_PATTERN);
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 		OAuthRequest request = new OAuthRequest(Verb.GET,
@@ -49,12 +60,20 @@ public class BookmarkListFinder {
 
 		if (includeArchives) {
 			request.addQuerystringParameter("archive", "1");
+			if (verbose) {
+				LOGGER.info("archives included");
+			}
+
 		} else {
 			request.addQuerystringParameter("archive", "0");
 		}
 
 		if (addedSince != null) {
-			request.addQuerystringParameter("addedSince", sdf.format(addedSince));
+			String since = sdf.format(addedSince);
+			request.addQuerystringParameter("added_since", since);
+			if (verbose) {
+				LOGGER.info("added since "+since);
+			}
 		}
 
 		service.signRequest(token, request);

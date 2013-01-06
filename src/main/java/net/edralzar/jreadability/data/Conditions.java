@@ -5,13 +5,13 @@ public class Conditions {
 	private String added_until;
 	private String opened_until;
 	private String archived_until;
-	private boolean favorite;
+	private int favorite;
 	private String archived_since;
 	private String favorited_since;
 	private String user;
 	private int per_page;
 	private String favorited_until;
-	private boolean archive;
+	private int archive;
 	private String added_since;
 	private String order;
 	private int page;
@@ -35,7 +35,7 @@ public class Conditions {
 	}
 
 	public boolean isFavorite() {
-		return favorite;
+		return favorite == 1;
 	}
 
 	public String getArchivedSince() {
@@ -59,7 +59,7 @@ public class Conditions {
 	}
 
 	public boolean isArchive() {
-		return archive;
+		return archive == 1;
 	}
 
 	public String getAddedSince() {

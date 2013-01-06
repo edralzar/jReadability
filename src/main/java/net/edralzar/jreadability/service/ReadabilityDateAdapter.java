@@ -25,7 +25,7 @@ public class ReadabilityDateAdapter extends TypeAdapter<Date> {
 			cal.setTime(value);
 			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
 			out.value(new SimpleDateFormat(
-					ReadabilityConst.DATETIME_INTPUT_PATTERN).format(cal
+					ReadabilityConst.DATETIME_INPUT_PATTERN).format(cal
 					.getTime()));
 		}
 	}
@@ -40,7 +40,7 @@ public class ReadabilityDateAdapter extends TypeAdapter<Date> {
 
 		String sDate = in.nextString();
 		SimpleDateFormat sdf = new SimpleDateFormat(
-				ReadabilityConst.DATETIME_INTPUT_PATTERN);
+				ReadabilityConst.DATETIME_INPUT_PATTERN);
 		sdf.setTimeZone(gmt);
 		Date parsedDate;
 		try {
