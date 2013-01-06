@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import net.edralzar.jreadability.ReadabilityException;
+import net.edralzar.jreadability.ReadabilityRestException;
 import net.edralzar.jreadability.data.BookmarkList;
 import net.edralzar.jreadability.oauth.ReadabilityConst;
 
@@ -63,7 +64,7 @@ public class BookmarkListFinder {
 			Gson gson = new Gson();
 			return gson.fromJson(response.getBody(), BookmarkList.class);
 		} else
-			throw new ReadabilityException(response.getCode(),
+			throw new ReadabilityRestException(response.getCode(),
 					response.getBody());
 	}
 }

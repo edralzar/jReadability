@@ -1,12 +1,8 @@
 package net.edralzar.jreadability.service;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
+import net.edralzar.jreadability.ReadabilityException;
 import net.edralzar.jreadability.oauth.ReadabilityApi;
 import net.edralzar.jreadability.oauth.ReadabilityConst;
 import net.edralzar.jreadability.oauth.store.ITokenStore;
@@ -18,10 +14,6 @@ import org.scribe.oauth.OAuthService;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 
 public class ReadabilityServiceBuilder {
 
@@ -41,18 +33,23 @@ public class ReadabilityServiceBuilder {
 
 			// wait for the user to validate his request token (delegate to the
 			// IAuthDelegate)
-			String pin = delegate.onAuthenticationNeeded(authUrl);
-			Verifier v = new Verifier(pin);
-			token = service.getAccessToken(reqToken, v);
+			try {
+				String pin = delegate.onAuthenticationNeeded(authUrl);
+				Verifier v = new Verifier(pin);
+				token = service.getAccessToken(reqToken, v);
 
-			if (token != null && !token.isEmpty()) {
-				tokenStore.saveToken(token);
-			} else
-				throw new IllegalStateException("Could not acquire a validated access token");
-		}
-
-		// here we should have a verified access token
-		return new ReadabilityService(tokenStore, service);
+				// here we should have a verified access token
+				if (token != null && !token.isEmpty()) {
+					tokenStore.saveToken(token);
+					return new ReadabilityService(tokenStore, service);
+				} else
+					throw new ReadabilityException("Could not access Readability API");
+			} catch (Exception e) {
+				throw new ReadabilityException(
+						"Could not access Readability API", e);
+			}
+		} else
+			return new ReadabilityService(tokenStore, service);
 	}
 
 	/**
@@ -68,10 +65,22 @@ public class ReadabilityServiceBuilder {
 	public static interface IAuthenticationDelegate {
 
 		/**
-		 * the token must be verified by the user by going to the webpage at <i>urlForAuthentication</u>
-		 * @param urlForAuthentication the page to visit to validate the token
-		 * @return the pin displayed by the page for verification purpose
+		 * the token must be verified by the user by going to the webpage at
+		 * <i>urlForAuthentication</u>
+		 *
+		 * @param urlForAuthentication
+		 *            the page to visit to validate the token
+		 * @return the pin displayed by the page for verification purpose, or
+		 *         null if unable to get one
 		 */
 		public String onAuthenticationNeeded(String urlForAuthentication);
+
+		/**
+		 * called whenever there's an exception during the verification of the
+		 * pin
+		 *
+		 * @param error
+		 */
+		public void onVerificationError(Throwable error);
 	}
 }

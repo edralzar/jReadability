@@ -1,23 +1,25 @@
 package net.edralzar.jreadability;
 
+/**
+ * base class for readability related exceptions
+ *
+ * @author edralzar
+ *
+ */
 public class ReadabilityException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	private int code;
-	private String detail;
 
-	public ReadabilityException(int code, String message) {
-		super("Error " + code);
-		this.code = code;
-		this.detail = message;
+	public ReadabilityException(String message) {
+		super(message);
 	}
 
-	public int getCode() {
-		return code;
+	public ReadabilityException(Throwable cause) {
+		super(cause);
 	}
 
-	public String getDetail() {
-		return detail;
+	public ReadabilityException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 }
