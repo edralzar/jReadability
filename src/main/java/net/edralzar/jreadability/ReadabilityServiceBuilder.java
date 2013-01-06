@@ -38,7 +38,7 @@ public class ReadabilityServiceBuilder {
 		}
 
 		// here we should have a verified access token
-		return new ReadabilityService(tokenStore);
+		return new ReadabilityService(tokenStore, service);
 	}
 
 
