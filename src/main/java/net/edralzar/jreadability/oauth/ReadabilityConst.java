@@ -2,8 +2,9 @@ package net.edralzar.jreadability.oauth;
 
 public interface ReadabilityConst {
 
-	static final String API_KEY = "edralzar1";
-	static final String API_SECRET = "xf4mxqhnBJyWWpFFMznHsjSbk7SVsdKf";
+	public static final String PROPERTIES_FILENAME = "jreadability.properties";
+	public static final String PROP_API_KEY = "api_key";
+	public static final String PROP_API_SECRET = "api_secret";
 
 	public static final String DATETIME_OUTPUT_PATTERN = "yyyyMMdd'T'hh:mm:ssZ";
 

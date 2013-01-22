@@ -1,6 +1,8 @@
 package net.edralzar.jreadability.service;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.Properties;
 
 import net.edralzar.jreadability.ReadabilityException;
 import net.edralzar.jreadability.oauth.ReadabilityApi;
@@ -19,9 +21,21 @@ public class ReadabilityServiceBuilder {
 
 	public static ReadabilityService build(ITokenStore tokenStore,
 			IAuthenticationDelegate delegate) {
+		Properties apiProps = new Properties();
+		try {
+			apiProps.load(ReadabilityServiceBuilder.class
+					.getResourceAsStream("/"
+							+ ReadabilityConst.PROPERTIES_FILENAME));
+		} catch (IOException e1) {
+			throw new IllegalStateException(
+					"Unable to load api keys from properties file, do you have a Readability.com API key?");
+		}
+		String apiKey = apiProps.getProperty(ReadabilityConst.PROP_API_KEY);
+		String apiSecret = apiProps.getProperty(ReadabilityConst.PROP_API_SECRET);
+
 		OAuthService service = new ServiceBuilder()
-				.apiKey(ReadabilityConst.API_KEY)
-				.apiSecret(ReadabilityConst.API_SECRET)
+				.apiKey(apiKey)
+				.apiSecret(apiSecret)
 				.provider(ReadabilityApi.class).callback("oob").build();
 
 		// try to get a saved token
