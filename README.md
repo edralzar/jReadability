@@ -19,12 +19,11 @@ maven
 Warning: The 0.1 version is a SNAPSHOT and is susceptible to change.
 
  add the following repository in your pom:
- 
- <repositories>
+
+	<repositories>
 		<repository>
 			<id>net.edralzar.jreadability</id>
 			<url>https://github.com/edralzar/jreadability/mvn-repo/raw/master</url>
-			<!-- use snapshot version -->
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
