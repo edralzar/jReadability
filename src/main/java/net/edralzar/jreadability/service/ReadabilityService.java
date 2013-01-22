@@ -17,7 +17,7 @@ import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 public class ReadabilityService {
@@ -76,9 +76,11 @@ public class ReadabilityService {
 		service.signRequest(token, request);
 		Response response = request.send();
 		if (response.isSuccessful()) {
-			JsonObject tagList = gson.fromJson(response.getBody(),JsonObject.class);
+			JsonElement tagList = gson.fromJson(response.getBody(),
+					JsonElement.class);
 			Type tagListType = new TypeToken<List<AppliedTag>>() {}.getType();
-			return gson.fromJson(tagList.get("tags"), tagListType);
+			return gson.fromJson(tagList.getAsJsonObject().get("tags"),
+					tagListType);
 		} else {
 			String detail = "Unable to add tags on bookmark id " + id;
 			if (response.getCode() == 403) {

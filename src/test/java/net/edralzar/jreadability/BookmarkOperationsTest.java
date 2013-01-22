@@ -68,7 +68,7 @@ public class BookmarkOperationsTest {
 		assertTrue(b.isFavorite());
 		assertFalse(b.isArchive());
 		assertFalse(b.getTags().isEmpty());
-		assertEquals(2, b.getTags().size());
+		assertTrue(b.getTags().size() >= 2);
 		assertNotNull(b.getArticle());
 		assertEquals("http://isittheweekend.com/", b.getArticle().getUrl().toString());
 	}
@@ -91,42 +91,23 @@ public class BookmarkOperationsTest {
 		if (testItemId == -1L) {
 			testAddAndGet();
 		}
+
+		int tagCount = service.getBookmark(testItemId).getTags().size();
+
 		List<AppliedTag> result = service.tagBookmark(testItemId, "test3");
-		boolean contains1 = false;
-		boolean contains2 = false;
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		assertEquals("test3", result.get(0).getText());
+
+		List<Tag> allTags = service.getBookmark(testItemId).getTags();
+
+		assertEquals(tagCount + 1, allTags.size());
 		boolean contains3 = false;
-		for (AppliedTag t : result) {
-			if (t.getText().equals("test1")) {
-				contains1 = true;
-			} else if (t.getText().equals("test2")) {
-				contains2 = true;
-			} else if (t.getText().equals("test3")) {
+		for (Tag t : allTags) {
+			if (t.getText().equals("test3")) {
 				contains3 = true;
 			}
 		}
-
-		assertEquals(3, result.size());
-		assertTrue(contains1);
-		assertTrue(contains2);
-		assertTrue(contains3);
-
-		Bookmark b = service.getBookmark(testItemId);
-		contains1 = false;
-		contains2 = false;
-		contains3 = false;
-		for (Tag t : b.getTags()) {
-			if (t.getText().equals("test1")) {
-				contains1 = true;
-			} else if (t.getText().equals("test2")) {
-				contains2 = true;
-			} else if (t.getText().equals("test3")) {
-				contains3 = true;
-			}
-		}
-
-		assertEquals(3, result.size());
-		assertTrue(contains1);
-		assertTrue(contains2);
 		assertTrue(contains3);
 	}
 
