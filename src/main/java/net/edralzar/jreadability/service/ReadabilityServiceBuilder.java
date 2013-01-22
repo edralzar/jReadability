@@ -41,7 +41,7 @@ public class ReadabilityServiceBuilder {
 				// here we should have a verified access token
 				if (token != null && !token.isEmpty()) {
 					tokenStore.saveToken(token);
-					return new ReadabilityService(tokenStore, service);
+					return new ReadabilityService(tokenStore, service, newGson());
 				} else
 					throw new ReadabilityException("Could not access Readability API");
 			} catch (Exception e) {
@@ -49,7 +49,7 @@ public class ReadabilityServiceBuilder {
 						"Could not access Readability API", e);
 			}
 		} else
-			return new ReadabilityService(tokenStore, service);
+			return new ReadabilityService(tokenStore, service, newGson());
 	}
 
 	/**
